@@ -25,5 +25,20 @@ import userRouter from './routes/user.routes.js'
 
 app.use("/api/v1/users",userRouter)
 // http://localhost:8000/api/v1/users/register
+// Routes
+app.use("/api/v1/users", userRouter);
+
+// 👇 Error middleware hamesha routes ke baad
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  return res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    errors: err.errors || [],
+    data: null,
+  });
+});
+
 
 export default app;
